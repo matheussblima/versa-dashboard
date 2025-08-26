@@ -33,11 +33,25 @@ export function usePontosDeMedicao() {
         }
     }, []);
 
+    const loadPontosDeMedicaoAvailable = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await api.get('/pontos-de-medicao/available');
+            setPontosDeMedicao(response.data);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição disponíveis');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     return {
         pontosDeMedicao,
         loading,
         error,
         loadPontosDeMedicao,
         loadPontosDeMedicaoByUnidade,
+        loadPontosDeMedicaoAvailable,
     };
 }

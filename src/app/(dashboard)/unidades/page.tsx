@@ -41,6 +41,7 @@ export default function UnidadesPage() {
     openSubUnidadeEditDialog,
     setSelectedUnidade,
     setSelectedSubUnidade,
+    setParentUnidade,
   } = useUnidadesPage();
 
   return (
@@ -81,7 +82,11 @@ export default function UnidadesPage() {
 
         <UnidadeDialog
           isOpen={createModal.isOpen}
-          onOpenChange={createModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              createModal.close();
+            }
+          }}
           onSubmit={handleCreateSubmit}
           mode="create"
         />
@@ -102,13 +107,23 @@ export default function UnidadesPage() {
         <UnidadeDialog
           unidade={selectedUnidade || undefined}
           isOpen={viewModal.isOpen}
-          onOpenChange={viewModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              viewModal.close();
+              setSelectedUnidade(null);
+            }
+          }}
           mode="view"
         />
 
         <SubUnidadeDialog
           isOpen={subUnidadeCreateModal.isOpen}
-          onOpenChange={subUnidadeCreateModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              subUnidadeCreateModal.close();
+              setParentUnidade(null);
+            }
+          }}
           onSubmit={handleSubUnidadeCreateSubmit}
           mode="create"
           parentUnidadeId={parentUnidade?.id}
@@ -123,7 +138,12 @@ export default function UnidadesPage() {
         <SubUnidadeDialog
           subUnidade={selectedSubUnidade || undefined}
           isOpen={subUnidadeViewModal.isOpen}
-          onOpenChange={subUnidadeViewModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              subUnidadeViewModal.close();
+              setSelectedSubUnidade(null);
+            }
+          }}
           mode="view"
           regioes={regioes}
           estados={estados}

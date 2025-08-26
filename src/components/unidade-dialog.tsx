@@ -62,7 +62,6 @@ export function UnidadeDialog({
 
     try {
       await onSubmit?.(formData);
-      onOpenChange(false);
       if (mode === "create") {
         setFormData({ nome: "", codigoCCEE: "", grupoEconomico: "" });
       }

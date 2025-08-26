@@ -118,7 +118,6 @@ export function SubUnidadeDialog({
 
     try {
       await onSubmit?.(formData);
-      onOpenChange(false);
       if (mode === "create") {
         setFormData({
           nome: "",

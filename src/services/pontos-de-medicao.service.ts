@@ -4,6 +4,7 @@ import { PontoDeMedicao } from '@/types';
 export interface PontosDeMedicaoService {
     findAll(): Promise<PontoDeMedicao[]>;
     findByUnidade(unidadeId: string): Promise<PontoDeMedicao[]>;
+    findAvailable(): Promise<PontoDeMedicao[]>;
 }
 
 export const pontosDeMedicaoService: PontosDeMedicaoService = {
@@ -14,6 +15,11 @@ export const pontosDeMedicaoService: PontosDeMedicaoService = {
 
     async findByUnidade(unidadeId: string): Promise<PontoDeMedicao[]> {
         const response = await api.get(`/pontos-de-medicao/${unidadeId}`);
+        return response.data;
+    },
+
+    async findAvailable(): Promise<PontoDeMedicao[]> {
+        const response = await api.get('/pontos-de-medicao/available');
         return response.data;
     },
 };

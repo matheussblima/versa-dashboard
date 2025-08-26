@@ -47,7 +47,7 @@ export function useUnidadesPage() {
     });
 
     const { createSubUnidade, updateSubUnidade, deleteSubUnidade } = useSubUnidades();
-    const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoByUnidade } = usePontosDeMedicao();
+    const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoAvailable } = usePontosDeMedicao();
     const { regioes, loading: loadingRegioes, loadRegioes } = useRegioes();
     const { estados, loading: loadingEstados, loadEstados } = useEstados();
 
@@ -226,9 +226,9 @@ export function useUnidadesPage() {
             codigoI100: "",
             codigoConv: "",
         });
-        loadPontosDeMedicaoByUnidade(unidade.id);
+        loadPontosDeMedicaoAvailable();
         subUnidadeCreateModal.open();
-    }, [setParentUnidade, setSubUnidadeFormData, subUnidadeCreateModal, loadPontosDeMedicaoByUnidade]);
+    }, [setParentUnidade, setSubUnidadeFormData, subUnidadeCreateModal, loadPontosDeMedicaoAvailable]);
 
     const openSubUnidadeEditDialog = useCallback((subunidade: SubUnidade) => {
         setSelectedSubUnidade(subunidade);
@@ -243,10 +243,13 @@ export function useUnidadesPage() {
             codigoI0: subunidade.codigoI0 || "",
             codigoI100: subunidade.codigoI100 || "",
             codigoConv: subunidade.codigoConv || "",
+            pontoDeMedicaoId: subunidade.pontoDeMedicao?.id || "",
+            regiaoId: subunidade.regiao?.id || "",
+            estadoId: subunidade.estado?.id || "",
         });
-        loadPontosDeMedicaoByUnidade(subunidade.unidadeId);
+        loadPontosDeMedicaoAvailable();
         subUnidadeEditModal.open();
-    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal, loadPontosDeMedicaoByUnidade]);
+    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal, loadPontosDeMedicaoAvailable]);
 
     const closeCreateDialog = useCallback(() => {
         createModal.close();
@@ -346,5 +349,6 @@ export function useUnidadesPage() {
         resetSubUnidadeForm,
         setSelectedUnidade,
         setSelectedSubUnidade,
+        setParentUnidade,
     };
 }
