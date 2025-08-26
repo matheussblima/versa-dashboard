@@ -13,17 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 import {
   LayoutDashboard,
-  Users,
-  BarChart3,
-  Settings,
   LogOut,
-  Menu,
   X,
   User,
-  Bell,
+  Settings,
   Building2,
 } from "lucide-react";
 
@@ -44,19 +39,6 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       href: "/dashboard",
     },
     { id: "unidades", label: "Unidades", icon: Building2, href: "/unidades" },
-    { id: "users", label: "Usuários", icon: Users, href: "/users" },
-    {
-      id: "analytics",
-      label: "Analytics",
-      icon: BarChart3,
-      href: "/analytics",
-    },
-    {
-      id: "settings",
-      label: "Configurações",
-      icon: Settings,
-      href: "/settings",
-    },
   ];
 
   return (

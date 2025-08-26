@@ -1,12 +1,8 @@
 "use client";
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { DashboardLayout } from "@/components/dashboard-layout";
 import { useUnidadesPage } from "@/hooks/useUnidadesPage";
-import {
-  SubUnidadeDialog,
-  UnidadeDialog,
-  UnidadesList,
-} from "@/components/unidades";
+import { SubUnidadeDialog, UnidadeDialog, UnidadesList } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";

@@ -1,8 +1,8 @@
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { StatsCard } from "@/components/dashboard/stats-card";
-import { ChartCard } from "@/components/dashboard/chart-card";
-import { BarChart } from "@/components/dashboard/bar-chart";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { DashboardLayout } from "@/components/dashboard-layout";
+import { StatsCard } from "@/components/stats-card";
+import { ChartCard } from "@/components/chart-card";
+import { BarChart } from "@/components/bar-chart";
+import { RecentActivity } from "@/components/recent-activity";
 import {
   Users,
   DollarSign,
