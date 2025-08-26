@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { PontoDeMedicao } from '@/types';
-import { pontosDeMedicaoService } from '@/services';
+import { api } from '@/lib/axios';
 
 export function usePontosDeMedicao() {
     const [pontosDeMedicao, setPontosDeMedicao] = useState<PontoDeMedicao[]>([]);
@@ -11,8 +11,8 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const data = await pontosDeMedicaoService.findAll();
-            setPontosDeMedicao(data);
+            const response = await api.get('/api/pontos-de-medicao');
+            setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição');
         } finally {
@@ -24,8 +24,8 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const data = await pontosDeMedicaoService.findByUnidade(unidadeId);
-            setPontosDeMedicao(data);
+            const response = await api.get(`/api/pontos-de-medicao?unidadeId=${unidadeId}`);
+            setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição da unidade');
         } finally {
@@ -37,8 +37,8 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const data = await pontosDeMedicaoService.searchByCcee(codigoCCEE);
-            setPontosDeMedicao(data);
+            const response = await api.get(`/api/pontos-de-medicao?codigoCCEE=${codigoCCEE}`);
+            setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao buscar pontos de medição na CCEE');
         } finally {

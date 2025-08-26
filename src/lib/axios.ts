@@ -1,8 +1,16 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export const api = axios.create({
+    baseURL: '/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    timeout: 10000,
+});
+
+export const externalApi = axios.create({
     baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json',
@@ -32,8 +40,6 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
-        console.error('Erro na resposta:', error.response?.status, error.config?.url);
-
         if (error.response?.status === 401) {
             console.error('Não autorizado - verificar autenticação');
         } else if (error.response?.status === 403) {

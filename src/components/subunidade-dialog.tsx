@@ -19,8 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { SubUnidade, CreateSubUnidadeData } from "@/types";
-import { usePontosDeMedicao } from "@/hooks";
+import { SubUnidade, CreateSubUnidadeData, PontoDeMedicao } from "@/types";
 import { toast } from "sonner";
 
 interface SubUnidadeDialogProps {
@@ -31,6 +30,8 @@ interface SubUnidadeDialogProps {
   mode: "create" | "edit" | "view";
   trigger?: React.ReactNode;
   parentUnidadeId?: string;
+  pontosDeMedicao?: PontoDeMedicao[];
+  loadingPontos?: boolean;
 }
 
 export function SubUnidadeDialog({
@@ -41,6 +42,8 @@ export function SubUnidadeDialog({
   mode,
   trigger,
   parentUnidadeId,
+  pontosDeMedicao = [],
+  loadingPontos = false,
 }: SubUnidadeDialogProps) {
   const [formData, setFormData] = useState<CreateSubUnidadeData>({
     nome: "",
@@ -56,12 +59,6 @@ export function SubUnidadeDialog({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const {
-    pontosDeMedicao,
-    loading: loadingPontos,
-    loadPontosDeMedicaoByUnidade,
-  } = usePontosDeMedicao();
 
   useEffect(() => {
     if (subUnidade && mode === "edit") {
@@ -94,21 +91,6 @@ export function SubUnidadeDialog({
       });
     }
   }, [subUnidade, mode]);
-
-  useEffect(() => {
-    if (isOpen && (mode === "create" || mode === "edit")) {
-      const unidadeId = parentUnidadeId || subUnidade?.unidadeId;
-      if (unidadeId) {
-        loadPontosDeMedicaoByUnidade(unidadeId);
-      }
-    }
-  }, [
-    isOpen,
-    mode,
-    parentUnidadeId,
-    subUnidade?.unidadeId,
-    loadPontosDeMedicaoByUnidade,
-  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

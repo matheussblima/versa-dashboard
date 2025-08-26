@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Unidade, CreateUnidadeData, SubUnidade, CreateSubUnidadeData, UpdateSubUnidadeData } from '@/types';
-import { useUnidades, useForm, useModal, useSelection, useSubUnidades } from './index';
+import { useUnidades, useForm, useModal, useSelection, useSubUnidades, usePontosDeMedicao } from './index';
 
 export function useUnidadesPage() {
     const {
@@ -47,6 +47,7 @@ export function useUnidadesPage() {
     });
 
     const { createSubUnidade, updateSubUnidade, deleteSubUnidade } = useSubUnidades();
+    const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoByUnidade } = usePontosDeMedicao();
 
     const handleCreateSubmit = useCallback(async (data: CreateUnidadeData) => {
         if (!data.nome.trim()) {
@@ -223,8 +224,9 @@ export function useUnidadesPage() {
             codigoI100: "",
             codigoConv: "",
         });
+        loadPontosDeMedicaoByUnidade(unidade.id);
         subUnidadeCreateModal.open();
-    }, [setParentUnidade, setSubUnidadeFormData, subUnidadeCreateModal]);
+    }, [setParentUnidade, setSubUnidadeFormData, subUnidadeCreateModal, loadPontosDeMedicaoByUnidade]);
 
     const openSubUnidadeEditDialog = useCallback((subunidade: SubUnidade) => {
         setSelectedSubUnidade(subunidade);
@@ -240,8 +242,9 @@ export function useUnidadesPage() {
             codigoI100: subunidade.codigoI100 || "",
             codigoConv: subunidade.codigoConv || "",
         });
+        loadPontosDeMedicaoByUnidade(subunidade.unidadeId);
         subUnidadeEditModal.open();
-    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal]);
+    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal, loadPontosDeMedicaoByUnidade]);
 
     const closeCreateDialog = useCallback(() => {
         createModal.close();
@@ -298,6 +301,8 @@ export function useUnidadesPage() {
         selectedUnidade,
         selectedSubUnidade,
         parentUnidade,
+        pontosDeMedicao,
+        loadingPontos,
         createModal,
         editModal,
         viewModal,

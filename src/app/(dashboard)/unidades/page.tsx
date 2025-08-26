@@ -14,6 +14,8 @@ export default function UnidadesPage() {
     selectedUnidade,
     selectedSubUnidade,
     parentUnidade,
+    pontosDeMedicao,
+    loadingPontos,
     createModal,
     editModal,
     viewModal,
@@ -106,6 +108,8 @@ export default function UnidadesPage() {
           onSubmit={handleSubUnidadeCreateSubmit}
           mode="create"
           parentUnidadeId={parentUnidade?.id}
+          pontosDeMedicao={pontosDeMedicao}
+          loadingPontos={loadingPontos}
         />
 
         <SubUnidadeDialog
@@ -126,6 +130,8 @@ export default function UnidadesPage() {
           }}
           onSubmit={handleSubUnidadeEditSubmit}
           mode="edit"
+          pontosDeMedicao={pontosDeMedicao}
+          loadingPontos={loadingPontos}
         />
       </div>
     </DashboardLayout>
