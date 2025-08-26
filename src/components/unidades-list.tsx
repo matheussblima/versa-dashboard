@@ -200,10 +200,10 @@ export function UnidadesList({
                       Nenhuma subunidade cadastrada
                     </p>
                     <Button
-                      variant="ghost"
+                      variant="text"
                       size="sm"
                       onClick={() => onAddSubUnidade(unidade)}
-                      className="text-xs text-blue-600 hover:text-blue-700 h-6 px-2"
+                      className="text-xs text-green-600 hover:text-green-700 h-6 px-2"
                     >
                       <Plus className="w-3 h-3 mr-1" />
                       Adicionar
