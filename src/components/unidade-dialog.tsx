@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Unidade, CreateUnidadeData } from "@/types";
+import { toast } from "sonner";
 
 interface UnidadeDialogProps {
   unidade?: Unidade;
@@ -66,7 +67,11 @@ export function UnidadeDialog({
         setFormData({ nome: "", codigoCCEE: "", grupoEconomico: "" });
       }
     } catch (error) {
-      console.error("Erro ao salvar unidade:", error);
+      toast.error(
+        `Erro ao salvar unidade: ${
+          error instanceof Error ? error.message : "Erro desconhecido"
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +96,6 @@ export function UnidadeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>

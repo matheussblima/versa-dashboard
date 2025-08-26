@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash2, Plus } from "lucide-react";
 import { Unidade, SubUnidade } from "@/types";
 
 interface UnidadesListProps {
@@ -8,6 +8,7 @@ interface UnidadesListProps {
   onView: (unidade: Unidade) => void;
   onEdit: (unidade: Unidade) => void;
   onDelete: (id: string) => void;
+  onAddSubUnidade: (unidade: Unidade) => void;
   onViewSubUnidade: (subunidade: SubUnidade) => void;
   onEditSubUnidade: (subunidade: SubUnidade) => void;
   onDeleteSubUnidade: (id: string) => void;
@@ -18,6 +19,7 @@ export function UnidadesList({
   onView,
   onEdit,
   onDelete,
+  onAddSubUnidade,
   onViewSubUnidade,
   onEditSubUnidade,
   onDeleteSubUnidade,
@@ -104,9 +106,20 @@ export function UnidadesList({
             {unidade.subUnidades && unidade.subUnidades.length > 0 && (
               <div className="mt-4 ml-12">
                 <div className="border-l-2 border-gray-200 pl-4">
-                  <h5 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-                    Subunidades ({unidade.subUnidades.length})
-                  </h5>
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Subunidades ({unidade.subUnidades.length})
+                    </h5>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onAddSubUnidade(unidade)}
+                      className="text-xs text-blue-600 hover:text-blue-700 h-6 px-2"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Adicionar
+                    </Button>
+                  </div>
                   <div className="space-y-2">
                     {unidade.subUnidades.map(
                       (subunidade: SubUnidade, index: number) => (
@@ -182,9 +195,20 @@ export function UnidadesList({
             {(!unidade.subUnidades || unidade.subUnidades.length === 0) && (
               <div className="mt-4 ml-12">
                 <div className="border-l-2 border-gray-200 pl-4">
-                  <p className="text-xs text-gray-400 italic">
-                    Nenhuma subunidade cadastrada
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-gray-400 italic">
+                      Nenhuma subunidade cadastrada
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onAddSubUnidade(unidade)}
+                      className="text-xs text-blue-600 hover:text-blue-700 h-6 px-2"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Adicionar
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}

@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SubUnidade, CreateSubUnidadeData } from "@/types";
+import { toast } from "sonner";
 
 interface SubUnidadeDialogProps {
   subUnidade?: SubUnidade;
@@ -89,7 +90,7 @@ export function SubUnidadeDialog({
           nome: "",
           descricao: "",
           cnpj: "",
-          unidadeId: "",
+          unidadeId: formData.unidadeId,
           apeRemoto: false,
           apeLocal: false,
           codigoI5: "",
@@ -99,7 +100,11 @@ export function SubUnidadeDialog({
         });
       }
     } catch (error) {
-      console.error("Erro ao salvar subunidade:", error);
+      toast.error(
+        `Erro ao salvar subunidade: ${
+          error instanceof Error ? error.message : "Erro desconhecido"
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -132,7 +137,6 @@ export function SubUnidadeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>

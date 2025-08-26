@@ -19,11 +19,13 @@ export function useUnidadesPage() {
     const createModal = useModal();
     const editModal = useModal();
     const viewModal = useModal();
+    const subUnidadeCreateModal = useModal();
     const subUnidadeViewModal = useModal();
     const subUnidadeEditModal = useModal();
 
     const { selectedItem: selectedUnidade, setSelectedItem: setSelectedUnidade } = useSelection<Unidade>();
     const { selectedItem: selectedSubUnidade, setSelectedItem: setSelectedSubUnidade } = useSelection<SubUnidade>();
+    const { selectedItem: parentUnidade, setSelectedItem: setParentUnidade } = useSelection<Unidade>();
 
     const { formData, setFormData, updateField, resetForm, isDirty: isFormDirty } = useForm<CreateUnidadeData>({
         nome: "",
@@ -36,9 +38,15 @@ export function useUnidadesPage() {
         descricao: "",
         cnpj: "",
         unidadeId: "",
+        apeRemoto: false,
+        apeLocal: false,
+        codigoI5: "",
+        codigoI0: "",
+        codigoI100: "",
+        codigoConv: "",
     });
 
-    const { updateSubUnidade, deleteSubUnidade } = useSubUnidades();
+    const { createSubUnidade, updateSubUnidade, deleteSubUnidade } = useSubUnidades();
 
     const handleCreateSubmit = useCallback(async (data: CreateUnidadeData) => {
         if (!data.nome.trim()) {
@@ -143,6 +151,30 @@ export function useUnidadesPage() {
         viewModal.open();
     }, [setSelectedUnidade, viewModal]);
 
+    const handleSubUnidadeCreateSubmit = useCallback(async (data: CreateSubUnidadeData) => {
+        if (!parentUnidade) {
+            throw new Error('Nenhuma unidade selecionada para adicionar subunidade');
+        }
+
+        if (!data.nome.trim()) {
+            throw new Error('Nome da subunidade é obrigatório');
+        }
+
+        try {
+            const subUnidadeData = {
+                ...data,
+                unidadeId: parentUnidade.id,
+            };
+            await createSubUnidade(subUnidadeData);
+            subUnidadeCreateModal.close();
+            setParentUnidade(null);
+            resetSubUnidadeForm();
+            await loadUnidades();
+        } catch (error) {
+            throw error;
+        }
+    }, [parentUnidade, createSubUnidade, subUnidadeCreateModal, setParentUnidade, resetSubUnidadeForm, loadUnidades]);
+
     const handleSubUnidadeEditSubmit = useCallback(async (data: CreateSubUnidadeData) => {
         if (!selectedSubUnidade) {
             throw new Error('Nenhuma subunidade selecionada para edição');
@@ -177,6 +209,23 @@ export function useUnidadesPage() {
         subUnidadeViewModal.open();
     }, [setSelectedSubUnidade, subUnidadeViewModal]);
 
+    const openSubUnidadeCreateDialog = useCallback((unidade: Unidade) => {
+        setParentUnidade(unidade);
+        setSubUnidadeFormData({
+            nome: "",
+            descricao: "",
+            cnpj: "",
+            unidadeId: unidade.id,
+            apeRemoto: false,
+            apeLocal: false,
+            codigoI5: "",
+            codigoI0: "",
+            codigoI100: "",
+            codigoConv: "",
+        });
+        subUnidadeCreateModal.open();
+    }, [setParentUnidade, setSubUnidadeFormData, subUnidadeCreateModal]);
+
     const openSubUnidadeEditDialog = useCallback((subunidade: SubUnidade) => {
         setSelectedSubUnidade(subunidade);
         setSubUnidadeFormData({
@@ -184,6 +233,12 @@ export function useUnidadesPage() {
             descricao: subunidade.descricao || "",
             cnpj: subunidade.cnpj || "",
             unidadeId: subunidade.unidadeId,
+            apeRemoto: subunidade.apeRemoto || false,
+            apeLocal: subunidade.apeLocal || false,
+            codigoI5: subunidade.codigoI5 || "",
+            codigoI0: subunidade.codigoI0 || "",
+            codigoI100: subunidade.codigoI100 || "",
+            codigoConv: subunidade.codigoConv || "",
         });
         subUnidadeEditModal.open();
     }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal]);
@@ -203,6 +258,12 @@ export function useUnidadesPage() {
         viewModal.close();
         setSelectedUnidade(null);
     }, [viewModal, setSelectedUnidade]);
+
+    const closeSubUnidadeCreateDialog = useCallback(() => {
+        subUnidadeCreateModal.close();
+        setParentUnidade(null);
+        resetSubUnidadeForm();
+    }, [subUnidadeCreateModal, setParentUnidade, resetSubUnidadeForm]);
 
     const closeSubUnidadeViewDialog = useCallback(() => {
         subUnidadeViewModal.close();
@@ -236,9 +297,11 @@ export function useUnidadesPage() {
         filteredUnidades,
         selectedUnidade,
         selectedSubUnidade,
+        parentUnidade,
         createModal,
         editModal,
         viewModal,
+        subUnidadeCreateModal,
         subUnidadeViewModal,
         subUnidadeEditModal,
         formData,
@@ -249,16 +312,19 @@ export function useUnidadesPage() {
         handleCreateSubmit,
         handleEditSubmit,
         handleDelete,
+        handleSubUnidadeCreateSubmit,
         handleSubUnidadeEditSubmit,
         handleSubUnidadeDelete,
         openCreateDialog,
         openEditDialog,
         openViewDialog,
+        openSubUnidadeCreateDialog,
         openSubUnidadeViewDialog,
         openSubUnidadeEditDialog,
         closeCreateDialog,
         closeEditDialog,
         closeViewDialog,
+        closeSubUnidadeCreateDialog,
         closeSubUnidadeViewDialog,
         closeSubUnidadeEditDialog,
         updateFormField,

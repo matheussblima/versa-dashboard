@@ -16,17 +16,20 @@ export default function UnidadesPage() {
     createModal,
     editModal,
     viewModal,
+    subUnidadeCreateModal,
     subUnidadeViewModal,
     subUnidadeEditModal,
     setSearchTerm,
     handleCreateSubmit,
     handleEditSubmit,
     handleDelete,
+    handleSubUnidadeCreateSubmit,
     handleSubUnidadeEditSubmit,
     handleSubUnidadeDelete,
     openCreateDialog,
     openEditDialog,
     openViewDialog,
+    openSubUnidadeCreateDialog,
     openSubUnidadeViewDialog,
     openSubUnidadeEditDialog,
   } = useUnidadesPage();
@@ -40,18 +43,10 @@ export default function UnidadesPage() {
             <p className="text-gray-600">Gerencie as unidades do sistema</p>
           </div>
 
-          <UnidadeDialog
-            isOpen={createModal.isOpen}
-            onOpenChange={createModal.toggle}
-            onSubmit={handleCreateSubmit}
-            mode="create"
-            trigger={
-              <Button onClick={openCreateDialog}>
-                <Plus className="w-4 h-4 mr-2" />
-                Nova Unidade
-              </Button>
-            }
-          />
+          <Button onClick={openCreateDialog}>
+            <Plus className="w-4 h-4 mr-2" />
+            Nova Unidade
+          </Button>
         </div>
 
         <div className="relative">
@@ -69,9 +64,17 @@ export default function UnidadesPage() {
           onView={openViewDialog}
           onEdit={openEditDialog}
           onDelete={handleDelete}
+          onAddSubUnidade={openSubUnidadeCreateDialog}
           onViewSubUnidade={openSubUnidadeViewDialog}
           onEditSubUnidade={openSubUnidadeEditDialog}
           onDeleteSubUnidade={handleSubUnidadeDelete}
+        />
+
+        <UnidadeDialog
+          isOpen={createModal.isOpen}
+          onOpenChange={createModal.toggle}
+          onSubmit={handleCreateSubmit}
+          mode="create"
         />
 
         <UnidadeDialog
@@ -87,6 +90,13 @@ export default function UnidadesPage() {
           isOpen={viewModal.isOpen}
           onOpenChange={viewModal.toggle}
           mode="view"
+        />
+
+        <SubUnidadeDialog
+          isOpen={subUnidadeCreateModal.isOpen}
+          onOpenChange={subUnidadeCreateModal.toggle}
+          onSubmit={handleSubUnidadeCreateSubmit}
+          mode="create"
         />
 
         <SubUnidadeDialog
