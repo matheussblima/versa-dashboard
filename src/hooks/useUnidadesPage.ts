@@ -47,7 +47,7 @@ export function useUnidadesPage() {
     });
 
     const { createSubUnidade, updateSubUnidade, deleteSubUnidade } = useSubUnidades();
-    const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoAvailable } = usePontosDeMedicao();
+    const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoAvailable, loadPontosDeMedicao } = usePontosDeMedicao();
     const { regioes, loading: loadingRegioes, loadRegioes } = useRegioes();
     const { estados, loading: loadingEstados, loadEstados } = useEstados();
 
@@ -247,9 +247,9 @@ export function useUnidadesPage() {
             regiaoId: subunidade.regiao?.id || "",
             estadoId: subunidade.estado?.id || "",
         });
-        loadPontosDeMedicaoAvailable();
+        loadPontosDeMedicao();
         subUnidadeEditModal.open();
-    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal, loadPontosDeMedicaoAvailable]);
+    }, [setSelectedSubUnidade, setSubUnidadeFormData, subUnidadeEditModal, loadPontosDeMedicao]);
 
     const closeCreateDialog = useCallback(() => {
         createModal.close();
