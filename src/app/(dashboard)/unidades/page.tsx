@@ -32,6 +32,8 @@ export default function UnidadesPage() {
     openSubUnidadeCreateDialog,
     openSubUnidadeViewDialog,
     openSubUnidadeEditDialog,
+    setSelectedUnidade,
+    setSelectedSubUnidade,
   } = useUnidadesPage();
 
   return (
@@ -80,7 +82,12 @@ export default function UnidadesPage() {
         <UnidadeDialog
           unidade={selectedUnidade || undefined}
           isOpen={editModal.isOpen}
-          onOpenChange={editModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              editModal.close();
+              setSelectedUnidade(null);
+            }
+          }}
           onSubmit={handleEditSubmit}
           mode="edit"
         />
@@ -109,7 +116,12 @@ export default function UnidadesPage() {
         <SubUnidadeDialog
           subUnidade={selectedSubUnidade || undefined}
           isOpen={subUnidadeEditModal.isOpen}
-          onOpenChange={subUnidadeEditModal.toggle}
+          onOpenChange={(open) => {
+            if (!open) {
+              subUnidadeEditModal.close();
+              setSelectedSubUnidade(null);
+            }
+          }}
           onSubmit={handleSubUnidadeEditSubmit}
           mode="edit"
         />

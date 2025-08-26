@@ -331,5 +331,7 @@ export function useUnidadesPage() {
         updateSubUnidadeFormField,
         resetForm,
         resetSubUnidadeForm,
+        setSelectedUnidade,
+        setSelectedSubUnidade,
     };
 }
