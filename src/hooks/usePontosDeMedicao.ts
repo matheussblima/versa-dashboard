@@ -11,7 +11,7 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get('/api/pontos-de-medicao');
+            const response = await api.get('/pontos-de-medicao');
             setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição');
@@ -24,23 +24,10 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get(`/api/pontos-de-medicao?unidadeId=${unidadeId}`);
+            const response = await api.get(`/pontos-de-medicao/unidade/${unidadeId}`);
             setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição da unidade');
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    const searchPontosDeMedicaoByCcee = useCallback(async (codigoCCEE: string) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await api.get(`/api/pontos-de-medicao?codigoCCEE=${codigoCCEE}`);
-            setPontosDeMedicao(response.data);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Erro ao buscar pontos de medição na CCEE');
         } finally {
             setLoading(false);
         }
@@ -52,6 +39,5 @@ export function usePontosDeMedicao() {
         error,
         loadPontosDeMedicao,
         loadPontosDeMedicaoByUnidade,
-        searchPontosDeMedicaoByCcee,
     };
 }
