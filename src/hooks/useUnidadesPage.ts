@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Unidade, CreateUnidadeData, SubUnidade, CreateSubUnidadeData, UpdateSubUnidadeData } from '@/types';
-import { useUnidades, useForm, useModal, useSelection, useSubUnidades, usePontosDeMedicao } from './index';
+import { useUnidades, useForm, useModal, useSelection, useSubUnidades, usePontosDeMedicao, useRegioes, useEstados } from './index';
 
 export function useUnidadesPage() {
     const {
@@ -48,6 +48,8 @@ export function useUnidadesPage() {
 
     const { createSubUnidade, updateSubUnidade, deleteSubUnidade } = useSubUnidades();
     const { pontosDeMedicao, loading: loadingPontos, loadPontosDeMedicaoByUnidade } = usePontosDeMedicao();
+    const { regioes, loading: loadingRegioes, loadRegioes } = useRegioes();
+    const { estados, loading: loadingEstados, loadEstados } = useEstados();
 
     const handleCreateSubmit = useCallback(async (data: CreateUnidadeData) => {
         if (!data.nome.trim()) {
@@ -289,7 +291,9 @@ export function useUnidadesPage() {
 
     useEffect(() => {
         loadUnidades();
-    }, [loadUnidades]);
+        loadRegioes();
+        loadEstados();
+    }, [loadUnidades, loadRegioes, loadEstados]);
 
 
     return {
@@ -303,6 +307,10 @@ export function useUnidadesPage() {
         parentUnidade,
         pontosDeMedicao,
         loadingPontos,
+        regioes,
+        estados,
+        loadingRegioes,
+        loadingEstados,
         createModal,
         editModal,
         viewModal,

@@ -16,6 +16,10 @@ export default function UnidadesPage() {
     parentUnidade,
     pontosDeMedicao,
     loadingPontos,
+    regioes,
+    estados,
+    loadingRegioes,
+    loadingEstados,
     createModal,
     editModal,
     viewModal,
@@ -110,6 +114,10 @@ export default function UnidadesPage() {
           parentUnidadeId={parentUnidade?.id}
           pontosDeMedicao={pontosDeMedicao}
           loadingPontos={loadingPontos}
+          regioes={regioes}
+          estados={estados}
+          loadingRegioes={loadingRegioes}
+          loadingEstados={loadingEstados}
         />
 
         <SubUnidadeDialog
@@ -117,6 +125,10 @@ export default function UnidadesPage() {
           isOpen={subUnidadeViewModal.isOpen}
           onOpenChange={subUnidadeViewModal.toggle}
           mode="view"
+          regioes={regioes}
+          estados={estados}
+          loadingRegioes={loadingRegioes}
+          loadingEstados={loadingEstados}
         />
 
         <SubUnidadeDialog
@@ -132,6 +144,10 @@ export default function UnidadesPage() {
           mode="edit"
           pontosDeMedicao={pontosDeMedicao}
           loadingPontos={loadingPontos}
+          regioes={regioes}
+          estados={estados}
+          loadingRegioes={loadingRegioes}
+          loadingEstados={loadingEstados}
         />
       </div>
     </DashboardLayout>

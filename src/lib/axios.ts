@@ -28,7 +28,6 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
     (response) => {
-        console.log('Resposta recebida:', response.status, response.config.url);
         return response;
     },
     (error) => {

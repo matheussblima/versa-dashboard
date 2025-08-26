@@ -19,7 +19,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { SubUnidade, CreateSubUnidadeData, PontoDeMedicao } from "@/types";
+import {
+  SubUnidade,
+  CreateSubUnidadeData,
+  PontoDeMedicao,
+  Regiao,
+  Estado,
+} from "@/types";
 import { toast } from "sonner";
 
 interface SubUnidadeDialogProps {
@@ -32,6 +38,10 @@ interface SubUnidadeDialogProps {
   parentUnidadeId?: string;
   pontosDeMedicao?: PontoDeMedicao[];
   loadingPontos?: boolean;
+  regioes?: Regiao[];
+  estados?: Estado[];
+  loadingRegioes?: boolean;
+  loadingEstados?: boolean;
 }
 
 export function SubUnidadeDialog({
@@ -44,6 +54,10 @@ export function SubUnidadeDialog({
   parentUnidadeId,
   pontosDeMedicao = [],
   loadingPontos = false,
+  regioes = [],
+  estados = [],
+  loadingRegioes = false,
+  loadingEstados = false,
 }: SubUnidadeDialogProps) {
   const [formData, setFormData] = useState<CreateSubUnidadeData>({
     nome: "",
@@ -56,6 +70,8 @@ export function SubUnidadeDialog({
     codigoI0: "",
     codigoI100: "",
     codigoConv: "",
+    regiaoId: "",
+    estadoId: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,6 +90,8 @@ export function SubUnidadeDialog({
         codigoI100: subUnidade.codigoI100 || "",
         codigoConv: subUnidade.codigoConv || "",
         pontoDeMedicaoId: subUnidade.pontoDeMedicao?.id || "",
+        regiaoId: subUnidade.regiao?.id || "",
+        estadoId: subUnidade.estado?.id || "",
       });
     } else if (mode === "create") {
       setFormData({
@@ -88,6 +106,8 @@ export function SubUnidadeDialog({
         codigoI100: "",
         codigoConv: "",
         pontoDeMedicaoId: "",
+        regiaoId: "",
+        estadoId: "",
       });
     }
   }, [subUnidade, mode]);
@@ -112,6 +132,8 @@ export function SubUnidadeDialog({
           codigoI100: "",
           codigoConv: "",
           pontoDeMedicaoId: "",
+          regiaoId: "",
+          estadoId: "",
         });
       }
     } catch (error) {
@@ -338,6 +360,57 @@ export function SubUnidadeDialog({
                 placeholder="Descrição da subunidade"
                 disabled={isSubmitting}
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Região
+                </label>
+                <Select
+                  value={formData.regiaoId || "none"}
+                  onValueChange={(value) =>
+                    updateField("regiaoId", value === "none" ? "" : value)
+                  }
+                  disabled={isSubmitting || loadingRegioes}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione uma região" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhuma região</SelectItem>
+                    {regioes.map((regiao) => (
+                      <SelectItem key={regiao.id} value={regiao.id}>
+                        {regiao.nome} ({regiao.sigla})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Estado
+                </label>
+                <Select
+                  value={formData.estadoId || "none"}
+                  onValueChange={(value) =>
+                    updateField("estadoId", value === "none" ? "" : value)
+                  }
+                  disabled={isSubmitting || loadingEstados}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione um estado" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhum estado</SelectItem>
+                    {estados.map((estado) => (
+                      <SelectItem key={estado.id} value={estado.id}>
+                        {estado.nome} ({estado.sigla})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
