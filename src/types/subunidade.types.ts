@@ -1,18 +1,7 @@
-export interface Estado {
-    id: string;
-    sigla: string;
-    nome: string;
-    createdAt: string;
-    updatedAt: string;
-}
 
-export interface Regiao {
-    id: string;
-    sigla: string;
-    nome: string;
-    createdAt: string;
-    updatedAt: string;
-}
+
+import { Estado } from './estado.types';
+import { Regiao } from './regiao.types';
 
 export interface PontoDeMedicao {
     id: string;
