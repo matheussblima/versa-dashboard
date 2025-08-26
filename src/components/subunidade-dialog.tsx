@@ -6,6 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -13,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SubUnidade, CreateSubUnidadeData } from "@/types";
+import { usePontosDeMedicao } from "@/hooks";
 import { toast } from "sonner";
 
 interface SubUnidadeDialogProps {
@@ -22,6 +30,7 @@ interface SubUnidadeDialogProps {
   onSubmit?: (data: CreateSubUnidadeData) => Promise<void>;
   mode: "create" | "edit" | "view";
   trigger?: React.ReactNode;
+  parentUnidadeId?: string;
 }
 
 export function SubUnidadeDialog({
@@ -31,6 +40,7 @@ export function SubUnidadeDialog({
   onSubmit,
   mode,
   trigger,
+  parentUnidadeId,
 }: SubUnidadeDialogProps) {
   const [formData, setFormData] = useState<CreateSubUnidadeData>({
     nome: "",
@@ -47,7 +57,12 @@ export function SubUnidadeDialog({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Atualizar o formulário quando a subunidade mudar
+  const {
+    pontosDeMedicao,
+    loading: loadingPontos,
+    loadPontosDeMedicaoByUnidade,
+  } = usePontosDeMedicao();
+
   useEffect(() => {
     if (subUnidade && mode === "edit") {
       setFormData({
@@ -61,6 +76,7 @@ export function SubUnidadeDialog({
         codigoI0: subUnidade.codigoI0 || "",
         codigoI100: subUnidade.codigoI100 || "",
         codigoConv: subUnidade.codigoConv || "",
+        pontoDeMedicaoId: subUnidade.pontoDeMedicao?.id || "",
       });
     } else if (mode === "create") {
       setFormData({
@@ -74,9 +90,25 @@ export function SubUnidadeDialog({
         codigoI0: "",
         codigoI100: "",
         codigoConv: "",
+        pontoDeMedicaoId: "",
       });
     }
   }, [subUnidade, mode]);
+
+  useEffect(() => {
+    if (isOpen && (mode === "create" || mode === "edit")) {
+      const unidadeId = parentUnidadeId || subUnidade?.unidadeId;
+      if (unidadeId) {
+        loadPontosDeMedicaoByUnidade(unidadeId);
+      }
+    }
+  }, [
+    isOpen,
+    mode,
+    parentUnidadeId,
+    subUnidade?.unidadeId,
+    loadPontosDeMedicaoByUnidade,
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +129,7 @@ export function SubUnidadeDialog({
           codigoI0: "",
           codigoI100: "",
           codigoConv: "",
+          pontoDeMedicaoId: "",
         });
       }
     } catch (error) {
@@ -137,7 +170,7 @@ export function SubUnidadeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
         </DialogHeader>
@@ -408,6 +441,42 @@ export function SubUnidadeDialog({
                   disabled={isSubmitting}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ponto de Medição
+              </label>
+              <Select
+                value={formData.pontoDeMedicaoId || "none"}
+                onValueChange={(value) =>
+                  updateField("pontoDeMedicaoId", value === "none" ? "" : value)
+                }
+                disabled={isSubmitting || loadingPontos}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione um ponto de medição" />
+                </SelectTrigger>
+                <SelectContent
+                  className="max-w-[400px] max-h-[200px] overflow-y-auto"
+                  position="popper"
+                  side="bottom"
+                  align="start"
+                >
+                  <SelectItem value="none">Nenhum ponto de medição</SelectItem>
+                  {pontosDeMedicao.map((ponto) => (
+                    <SelectItem
+                      key={ponto.id}
+                      value={ponto.id}
+                      className="max-w-full"
+                    >
+                      <div className="truncate max-w-[350px]">
+                        {ponto.codigo} - {ponto.descricao || "Sem descrição"}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex justify-end space-x-2">

@@ -3,10 +3,11 @@ import { UnidadesService } from '@/services/unidades.service';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const unidade = await UnidadesService.getById(params.id);
+        const { id } = await params;
+        const unidade = await UnidadesService.getById(id);
         return NextResponse.json(unidade);
     } catch (error) {
         return NextResponse.json(
@@ -18,11 +19,12 @@ export async function GET(
 
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const body = await request.json();
-        const unidade = await UnidadesService.update(params.id, body);
+        const unidade = await UnidadesService.update(id, body);
         return NextResponse.json(unidade);
     } catch (error) {
         return NextResponse.json(
@@ -34,10 +36,11 @@ export async function PATCH(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        await UnidadesService.delete(params.id);
+        const { id } = await params;
+        await UnidadesService.delete(id);
         return new NextResponse(null, { status: 204 });
     } catch (error) {
         return NextResponse.json(

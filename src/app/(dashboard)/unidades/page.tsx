@@ -13,6 +13,7 @@ export default function UnidadesPage() {
     filteredUnidades,
     selectedUnidade,
     selectedSubUnidade,
+    parentUnidade,
     createModal,
     editModal,
     viewModal,
@@ -104,6 +105,7 @@ export default function UnidadesPage() {
           onOpenChange={subUnidadeCreateModal.toggle}
           onSubmit={handleSubUnidadeCreateSubmit}
           mode="create"
+          parentUnidadeId={parentUnidade?.id}
         />
 
         <SubUnidadeDialog
