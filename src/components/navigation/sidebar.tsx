@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -22,6 +24,7 @@ import {
   X,
   User,
   Bell,
+  Building2,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -30,13 +33,30 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const pathname = usePathname();
+  const activeItem = pathname.split("/")[1] || "dashboard";
 
   const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "users", label: "Usuários", icon: Users },
-    { id: "analytics", label: "Analytics", icon: BarChart3 },
-    { id: "settings", label: "Configurações", icon: Settings },
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: LayoutDashboard,
+      href: "/dashboard",
+    },
+    { id: "unidades", label: "Unidades", icon: Building2, href: "/unidades" },
+    { id: "users", label: "Usuários", icon: Users, href: "/users" },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: BarChart3,
+      href: "/analytics",
+    },
+    {
+      id: "settings",
+      label: "Configurações",
+      icon: Settings,
+      href: "/settings",
+    },
   ];
 
   return (
@@ -81,15 +101,15 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <Button
-                  key={item.id}
-                  variant={activeItem === item.id ? "default" : "ghost"}
-                  className="w-full justify-start"
-                  onClick={() => setActiveItem(item.id)}
-                >
-                  <Icon className="mr-3 h-4 w-4" />
-                  {item.label}
-                </Button>
+                <Link key={item.id} href={item.href}>
+                  <Button
+                    variant={activeItem === item.id ? "default" : "ghost"}
+                    className="w-full justify-start"
+                  >
+                    <Icon className="mr-3 h-4 w-4" />
+                    {item.label}
+                  </Button>
+                </Link>
               );
             })}
           </nav>
