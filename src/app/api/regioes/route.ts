@@ -3,10 +3,9 @@ import { regioesService } from '@/services/regioes.service';
 
 export async function GET() {
     try {
-        const data = await regioesService.findAll();
-        return NextResponse.json(data);
+        const regioes = await regioesService.findAll();
+        return NextResponse.json(regioes);
     } catch (error) {
-        console.error('Erro ao buscar regiões:', error);
         return NextResponse.json(
             { error: 'Erro ao carregar regiões' },
             { status: 500 }

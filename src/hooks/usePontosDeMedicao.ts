@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { PontoDeMedicao } from '@/types';
-import { api } from '@/lib/axios';
+import axios from 'axios';
 
 export function usePontosDeMedicao() {
     const [pontosDeMedicao, setPontosDeMedicao] = useState<PontoDeMedicao[]>([]);
@@ -11,7 +11,7 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get('/pontos-de-medicao');
+            const response = await axios.get('api/pontos-de-medicao');
             setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição');
@@ -24,7 +24,7 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get(`/pontos-de-medicao/unidade/${unidadeId}`);
+            const response = await axios.get(`api/pontos-de-medicao/unidade/${unidadeId}`);
             setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição da unidade');
@@ -37,7 +37,7 @@ export function usePontosDeMedicao() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get('/pontos-de-medicao/available');
+            const response = await axios.get('api/pontos-de-medicao/available');
             setPontosDeMedicao(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pontos de medição disponíveis');

@@ -9,7 +9,7 @@ export class MedidasQuinzeMinutosService {
             params.append('codigoPontoMedicao', filters.codigoPontoMedicao);
         }
 
-        const response = await api.get(`/medidas-quinze-minutos${params.toString()}`);
+        const response = await api.get(`/medidas-quinze-minutos?${params.toString()}`);
         return response.data;
     }
 

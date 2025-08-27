@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Regiao } from '@/types';
-import { api } from '@/lib/axios';
+import axios from 'axios';
 
 export function useRegioes() {
     const [regioes, setRegioes] = useState<Regiao[]>([]);
@@ -11,7 +11,7 @@ export function useRegioes() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get('/regioes');
+            const response = await axios.get('api/regioes');
             setRegioes(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar regiões');
@@ -24,7 +24,7 @@ export function useRegioes() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get(`/regioes/${id}`);
+            const response = await axios.get(`api/regioes/${id}`);
             return response.data;
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar região');

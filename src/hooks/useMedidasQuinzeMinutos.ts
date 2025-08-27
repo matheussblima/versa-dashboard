@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { MedidaQuinzeMinutos, MedidaQuinzeMinutosFilters } from '@/types';
-import { api } from '@/lib/axios';
+import axios from 'axios';
 
 export function useMedidasQuinzeMinutos() {
     const [medidas, setMedidas] = useState<MedidaQuinzeMinutos[]>([]);
@@ -17,7 +17,7 @@ export function useMedidasQuinzeMinutos() {
                 params.append('codigoPontoMedicao', filters.codigoPontoMedicao);
             }
 
-            const response = await api.get(`/medidas-quinze-minutos?${params.toString()}`);
+            const response = await axios.get(`api/medidas-quinze-minutos?${params.toString()}`);
             setMedidas(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar medidas de quinze minutos');
@@ -31,7 +31,7 @@ export function useMedidasQuinzeMinutos() {
         setError(null);
 
         try {
-            const response = await api.get(`/medidas-quinze-minutos?codigoPontoMedicao=${codigoPontoMedicao}`);
+            const response = await axios.get(`api/medidas-quinze-minutos?codigoPontoMedicao=${codigoPontoMedicao}`);
             setMedidas(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar medidas do ponto de medição');

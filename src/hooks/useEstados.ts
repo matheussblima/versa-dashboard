@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Estado } from '@/types';
-import { api } from '@/lib/axios';
+import axios from 'axios';
 
 export function useEstados() {
     const [estados, setEstados] = useState<Estado[]>([]);
@@ -11,7 +11,7 @@ export function useEstados() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get('/estados');
+            const response = await axios.get('api/estados');
             setEstados(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar estados');
@@ -24,7 +24,7 @@ export function useEstados() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get(`/estados/regiao/${regiaoId}`);
+            const response = await axios.get(`api/estados/regiao/${regiaoId}`);
             setEstados(response.data);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar estados da região');
@@ -37,7 +37,7 @@ export function useEstados() {
         setLoading(true);
         setError(null);
         try {
-            const response = await api.get(`/estados/${id}`);
+            const response = await axios.get(`api/estados/${id}`);
             return response.data;
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar estado');

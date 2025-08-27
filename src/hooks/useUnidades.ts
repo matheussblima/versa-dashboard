@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Unidade, CreateUnidadeData, UpdateUnidadeData } from '@/types';
-import { UnidadesService } from '@/services/unidades.service';
 import { toast } from 'sonner';
+import axios from 'axios';
 
 interface UseUnidadesReturn {
     unidades: Unidade[];
@@ -34,8 +34,8 @@ export function useUnidades(): UseUnidadesReturn {
         setError(null);
 
         try {
-            const data = await UnidadesService.getAll();
-            setUnidades(data);
+            const response = await axios.get('api/unidades');
+            setUnidades(response.data);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar unidades';
             setError(errorMessage);
@@ -50,8 +50,8 @@ export function useUnidades(): UseUnidadesReturn {
         setError(null);
 
         try {
-            const newUnidade = await UnidadesService.create(data);
-            setUnidades((prev) => [...prev, newUnidade]);
+            const newUnidade = await axios.post('api/unidades', data);
+            setUnidades((prev) => [...prev, newUnidade.data]);
             toast.success('Unidade criada com sucesso!');
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Erro ao criar unidade';
@@ -68,10 +68,10 @@ export function useUnidades(): UseUnidadesReturn {
         setError(null);
 
         try {
-            const updatedUnidade = await UnidadesService.update(id, data);
+            const updatedUnidade = await axios.put(`api/unidades/${id}`, data);
             setUnidades((prev) =>
                 prev.map((unidade) =>
-                    unidade.id === id ? updatedUnidade : unidade
+                    unidade.id === id ? updatedUnidade.data : unidade
                 )
             );
             toast.success('Unidade atualizada com sucesso!');
@@ -95,7 +95,7 @@ export function useUnidades(): UseUnidadesReturn {
         setError(null);
 
         try {
-            await UnidadesService.delete(id);
+            await axios.delete(`api/unidades/${id}`);
             setUnidades((prev) => prev.filter((unidade) => unidade.id !== id));
             toast.success('Unidade deletada com sucesso!');
         } catch (err) {
