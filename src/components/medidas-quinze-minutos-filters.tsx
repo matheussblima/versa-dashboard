@@ -2,19 +2,29 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
-import { MedidaQuinzeMinutosFilters } from "@/types";
+import { MedidaQuinzeMinutosFilters, PontoDeMedicao } from "@/types";
 
 interface MedidasQuinzeMinutosFiltersProps {
   filters: MedidaQuinzeMinutosFilters;
   onFiltersChange: (filters: MedidaQuinzeMinutosFilters) => void;
+  pontosDeMedicao: PontoDeMedicao[];
+  loadingPontos?: boolean;
 }
 
 export function MedidasQuinzeMinutosFilters({
   filters,
   onFiltersChange,
+  pontosDeMedicao,
+  loadingPontos = false,
 }: MedidasQuinzeMinutosFiltersProps) {
   const [localFilters, setLocalFilters] =
     useState<MedidaQuinzeMinutosFilters>(filters);
@@ -33,6 +43,13 @@ export function MedidasQuinzeMinutosFilters({
     (value) => value !== undefined && value !== ""
   );
 
+  const handlePontoChange = (value: string) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      codigoPontoMedicao: value === "todos" ? undefined : value,
+    }));
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -44,23 +61,30 @@ export function MedidasQuinzeMinutosFilters({
             htmlFor="codigoPontoMedicao"
             className="text-sm font-medium text-gray-700"
           >
-            Código do Ponto de Medição
+            Ponto de Medição
           </label>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              id="codigoPontoMedicao"
-              placeholder="Ex: RSPKSCALADM01"
-              value={localFilters.codigoPontoMedicao || ""}
-              onChange={(e) =>
-                setLocalFilters((prev) => ({
-                  ...prev,
-                  codigoPontoMedicao: e.target.value,
-                }))
-              }
-              className="pl-10"
-            />
-          </div>
+          <Select
+            value={localFilters.codigoPontoMedicao || "todos"}
+            onValueChange={handlePontoChange}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione um ponto de medição" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="todos">Todos os pontos</SelectItem>
+              {loadingPontos ? (
+                <SelectItem value="loading" disabled>
+                  Carregando pontos...
+                </SelectItem>
+              ) : (
+                pontosDeMedicao.map((ponto) => (
+                  <SelectItem key={ponto.id} value={ponto.codigo}>
+                    {ponto.codigo} {ponto.descricao && `- ${ponto.descricao}`}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex space-x-2">

@@ -1,7 +1,14 @@
 "use client";
 
 import { MedidaQuinzeMinutos } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, Calendar, Zap, Hash } from "lucide-react";
@@ -19,63 +26,75 @@ export function MedidasQuinzeMinutosList({
 }: MedidasQuinzeMinutosListProps) {
   if (medidas.length === 0) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <Zap className="w-12 h-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Nenhuma medida encontrada
-          </h3>
-          <p className="text-gray-500 text-center">
-            Não há medidas de quinze minutos para exibir.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
+        <Zap className="w-12 h-12 text-gray-400 mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          Nenhuma medida encontrada
+        </h3>
+        <p className="text-gray-500 text-center">
+          Não há medidas de quinze minutos para exibir.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {medidas.map((medida) => (
-        <Card key={medida.id} className="hover:shadow-md transition-shadow">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Código do Ponto</TableHead>
+            <TableHead>Valor</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Data/Hora</TableHead>
+            {onView && <TableHead className="text-right">Ações</TableHead>}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {medidas.map((medida) => (
+            <TableRow key={medida.id} className="hover:bg-gray-50">
+              <TableCell className="font-medium">
                 {medida.codigoPontoMedicao}
-              </CardTitle>
-              <Badge variant="secondary">{medida.unidade || "kWh"}</Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <Hash className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-600">
-                Valor: <span className="font-medium">{medida.valor}</span>
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-600">
-                {format(new Date(medida.dataHora), "dd/MM/yyyy 'às' HH:mm", {
-                  locale: ptBR,
-                })}
-              </span>
-            </div>
-
-            {onView && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onView(medida)}
-                className="w-full"
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                Visualizar
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-      ))}
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-2">
+                  <Hash className="w-4 h-4 text-gray-500" />
+                  <span>{medida.valor}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <Badge variant="secondary">{medida.unidade || "kWh"}</Badge>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4 text-gray-500" />
+                  <span>
+                    {format(
+                      new Date(medida.dataHora),
+                      "dd/MM/yyyy 'às' HH:mm",
+                      {
+                        locale: ptBR,
+                      }
+                    )}
+                  </span>
+                </div>
+              </TableCell>
+              {onView && (
+                <TableCell className="text-right">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onView(medida)}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    Visualizar
+                  </Button>
+                </TableCell>
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

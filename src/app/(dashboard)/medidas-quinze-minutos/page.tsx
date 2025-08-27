@@ -18,6 +18,8 @@ export default function MedidasQuinzeMinutosPage() {
     filters,
     selectedMedida,
     viewModal,
+    pontosDeMedicao,
+    loadingPontos,
     handleFiltersChange,
     handleViewMedida,
     handleCloseViewModal,
@@ -38,15 +40,15 @@ export default function MedidasQuinzeMinutosPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-4">
-          <div className="lg:col-span-1">
-            <MedidasQuinzeMinutosFilters
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-            />
-          </div>
+        <div className="space-y-6">
+          <MedidasQuinzeMinutosFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            pontosDeMedicao={pontosDeMedicao}
+            loadingPontos={loadingPontos}
+          />
 
-          <div className="lg:col-span-3">
+          <div>
             {error && (
               <Alert variant="destructive" className="mb-4">
                 <AlertDescription>{error}</AlertDescription>
