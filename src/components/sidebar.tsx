@@ -20,6 +20,7 @@ import {
   User,
   Settings,
   Building2,
+  Zap,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -39,6 +40,12 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       href: "/dashboard",
     },
     { id: "unidades", label: "Unidades", icon: Building2, href: "/unidades" },
+    {
+      id: "medidas-quinze-minutos",
+      label: "Medidas 15min",
+      icon: Zap,
+      href: "/medidas-quinze-minutos",
+    },
   ];
 
   return (

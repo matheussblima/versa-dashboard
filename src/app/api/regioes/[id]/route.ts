@@ -1,12 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { regioesService } from '@/services/regioes.service';
 
 export async function GET(
-    request: Request,
-    { params }: { params: { id: string } }
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
     try {
-        const data = await regioesService.findById(params.id);
+        const data = await regioesService.findById(id);
         return NextResponse.json(data);
     } catch (error) {
         console.error('Erro ao buscar região:', error);

@@ -8,3 +8,5 @@ export { useSubUnidades } from './useSubUnidades';
 export { usePontosDeMedicao } from './usePontosDeMedicao';
 export { useRegioes } from './useRegioes';
 export { useEstados } from './useEstados';
+export { useMedidasQuinzeMinutos } from './useMedidasQuinzeMinutos';
+export { useMedidasQuinzeMinutosPage } from './useMedidasQuinzeMinutosPage';
