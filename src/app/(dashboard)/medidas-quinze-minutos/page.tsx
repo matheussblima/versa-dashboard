@@ -29,7 +29,6 @@ export default function MedidasQuinzeMinutosPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex items-center space-x-2">
-          <Zap className="w-8 h-8 text-blue-600" />
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
               Medidas de Quinze Minutos

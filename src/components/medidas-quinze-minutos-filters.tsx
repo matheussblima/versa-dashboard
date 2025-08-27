@@ -55,54 +55,52 @@ export function MedidasQuinzeMinutosFilters({
       <CardHeader>
         <CardTitle className="text-lg">Filtros</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <label
-            htmlFor="codigoPontoMedicao"
-            className="text-sm font-medium text-gray-700"
-          >
-            Ponto de Medição
-          </label>
-          <Select
-            value={localFilters.codigoPontoMedicao || "todos"}
-            onValueChange={handlePontoChange}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione um ponto de medição" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todos">Todos os pontos</SelectItem>
-              {loadingPontos ? (
-                <SelectItem value="loading" disabled>
-                  Carregando pontos...
-                </SelectItem>
-              ) : (
-                pontosDeMedicao.map((ponto) => (
-                  <SelectItem key={ponto.id} value={ponto.codigo}>
-                    {ponto.codigo} {ponto.descricao && `- ${ponto.descricao}`}
-                  </SelectItem>
-                ))
-              )}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex space-x-2">
-          <Button onClick={handleApplyFilters} className="flex-1">
-            <Search className="w-4 h-4 mr-2" />
-            Aplicar Filtros
-          </Button>
-
-          {hasActiveFilters && (
-            <Button
-              variant="outline"
-              onClick={handleClearFilters}
-              className="flex-1"
+      <CardContent>
+        <div className="flex flex-col sm:flex-row gap-4 items-end">
+          <div className="flex-1 min-w-0">
+            <label
+              htmlFor="codigoPontoMedicao"
+              className="text-sm font-medium text-gray-700 block mb-2"
             >
-              <X className="w-4 h-4 mr-2" />
-              Limpar
+              Ponto de Medição
+            </label>
+            <Select
+              value={localFilters.codigoPontoMedicao || "todos"}
+              onValueChange={handlePontoChange}
+            >
+              <SelectTrigger className="min-w-[300px] max-w-md">
+                <SelectValue placeholder="Selecione um ponto de medição" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os pontos</SelectItem>
+                {loadingPontos ? (
+                  <SelectItem value="loading" disabled>
+                    Carregando pontos...
+                  </SelectItem>
+                ) : (
+                  pontosDeMedicao.map((ponto) => (
+                    <SelectItem key={ponto.id} value={ponto.codigo}>
+                      {ponto.codigo} {ponto.descricao && `- ${ponto.descricao}`}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex gap-2 flex-shrink-0">
+            <Button onClick={handleApplyFilters}>
+              <Search className="w-4 h-4 mr-2" />
+              Aplicar Filtros
             </Button>
-          )}
+
+            {hasActiveFilters && (
+              <Button variant="outline" onClick={handleClearFilters}>
+                <X className="w-4 h-4 mr-2" />
+                Limpar
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
