@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SubUnidadesService } from '@/services/subunidades.service';
 
-interface RouteParams {
-    params: {
-        id: string;
-    };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
-        const subunidade = await SubUnidadesService.getById(params.id);
+        const { id } = await params;
+        const subunidade = await SubUnidadesService.getById(id);
         return NextResponse.json(subunidade);
     } catch (error) {
         if (error instanceof Error && error.message === 'Subunidade não encontrada') {
@@ -25,10 +23,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 }
 
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
+        const { id } = await params;
         const body = await request.json();
-        const subunidade = await SubUnidadesService.update(params.id, body);
+        const subunidade = await SubUnidadesService.update(id, body);
         return NextResponse.json(subunidade);
     } catch (error) {
         if (error instanceof Error && error.message === 'Subunidade não encontrada') {
@@ -44,9 +46,13 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
-        await SubUnidadesService.delete(params.id);
+        const { id } = await params;
+        await SubUnidadesService.delete(id);
         return NextResponse.json({ message: 'Subunidade deletada com sucesso' });
     } catch (error) {
         if (error instanceof Error && error.message === 'Subunidade não encontrada') {
