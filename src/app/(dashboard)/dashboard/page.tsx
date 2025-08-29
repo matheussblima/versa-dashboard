@@ -77,18 +77,18 @@ export default function DashboardPage() {
   }, [loadMedidas]);
 
   useEffect(() => {
-    if (medidas.length > 0) {
+    if (medidas && medidas.data.length > 0) {
       // Calcular estatísticas
-      const valores = medidas.map((m) => m.valor);
+      const valores = medidas.data.map((m) => m.valor);
       const consumoTotal = valores.reduce((sum, valor) => sum + valor, 0);
       const potenciaMaxima = Math.max(...valores);
       const eficiencia = (
-        (consumoTotal / (potenciaMaxima * medidas.length)) *
+        (consumoTotal / (potenciaMaxima * medidas.data.length)) *
         100
       ).toFixed(1);
 
       // Agrupar por hora do dia
-      const medidasPorHora = medidas.reduce((acc, medida) => {
+      const medidasPorHora = medidas.data.reduce((acc, medida) => {
         const hora = new Date(medida.dataHora).getHours();
         const horaFormatada = `${hora.toString().padStart(2, "0")}:00`;
         if (!acc[horaFormatada]) acc[horaFormatada] = [];
@@ -97,7 +97,7 @@ export default function DashboardPage() {
       }, {} as Record<string, number[]>);
 
       // Agrupar por dia da semana
-      const medidasPorDia = medidas.reduce((acc, medida) => {
+      const medidasPorDia = medidas.data.reduce((acc, medida) => {
         const dia = new Date(medida.dataHora).toLocaleDateString("pt-BR", {
           weekday: "short",
         });
@@ -151,7 +151,7 @@ export default function DashboardPage() {
         },
         {
           title: "Pontos Ativos",
-          value: medidas.length.toString(),
+          value: medidas.data.length.toString(),
           description: "Medições realizadas",
           icon: Activity,
           trend: { value: 3.1, isPositive: true },
