@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
-import { MedidaQuinzeMinutos, MedidaQuinzeMinutosFilters } from '@/types';
+import { MedidaQuinzeMinutosFilters, MedidaQuinzeMinutosResponse } from '@/types';
 import axios from 'axios';
 
 export function useMedidasQuinzeMinutos() {
-    const [medidas, setMedidas] = useState<MedidaQuinzeMinutos[]>([]);
+    const [medidas, setMedidas] = useState<MedidaQuinzeMinutosResponse>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 

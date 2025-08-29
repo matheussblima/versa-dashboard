@@ -5,9 +5,17 @@ export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const codigoPontoMedicao = searchParams.get('codigoPontoMedicao');
+        const unidadeId = searchParams.get('unidadeId');
 
-        const filters = codigoPontoMedicao ? { codigoPontoMedicao } : undefined;
-        const medidas = await medidasQuinzeMinutosService.findAll(filters);
+        const filters: any = {};
+        if (codigoPontoMedicao) {
+            filters.codigoPontoMedicao = codigoPontoMedicao;
+        }
+        if (unidadeId) {
+            filters.unidadeId = unidadeId;
+        }
+
+        const medidas = await medidasQuinzeMinutosService.findAll(Object.keys(filters).length > 0 ? filters : undefined);
 
         return NextResponse.json(medidas);
     } catch (error) {

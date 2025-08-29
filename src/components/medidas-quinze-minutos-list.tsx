@@ -1,6 +1,6 @@
 "use client";
 
-import { MedidaQuinzeMinutos } from "@/types";
+import { MedidaQuinzeMinutos, MedidaQuinzeMinutosResponse } from "@/types";
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 interface MedidasQuinzeMinutosListProps {
-  medidas: MedidaQuinzeMinutos[];
+  medidas?: MedidaQuinzeMinutosResponse;
   onView?: (medida: MedidaQuinzeMinutos) => void;
 }
 
@@ -24,7 +24,7 @@ export function MedidasQuinzeMinutosList({
   medidas,
   onView,
 }: MedidasQuinzeMinutosListProps) {
-  if (medidas.length === 0) {
+  if (!medidas?.data?.length) {
     return (
       <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
         <Zap className="w-12 h-12 text-gray-400 mb-4" />
@@ -51,7 +51,7 @@ export function MedidasQuinzeMinutosList({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {medidas.map((medida) => (
+          {medidas.data.map((medida) => (
             <TableRow key={medida.id} className="hover:bg-gray-50">
               <TableCell className="font-medium">
                 {medida.codigoPontoMedicao}

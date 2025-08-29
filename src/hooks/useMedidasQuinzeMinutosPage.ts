@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { MedidaQuinzeMinutos, MedidaQuinzeMinutosFilters } from '@/types';
-import { useMedidasQuinzeMinutos, useModal, useSelection, usePontosDeMedicao } from './index';
+import { useMedidasQuinzeMinutos, useModal, useSelection, usePontosDeMedicao, useUnidades } from './index';
 
 export function useMedidasQuinzeMinutosPage() {
     const {
@@ -16,6 +16,12 @@ export function useMedidasQuinzeMinutosPage() {
         loadPontosDeMedicao,
     } = usePontosDeMedicao();
 
+    const {
+        unidades,
+        loading: loadingUnidades,
+        loadUnidades,
+    } = useUnidades();
+
     const viewModal = useModal();
     const { selectedItem: selectedMedida, setSelectedItem: setSelectedMedida } = useSelection<MedidaQuinzeMinutos>();
     const [filters, setFilters] = useState<MedidaQuinzeMinutosFilters>({});
@@ -23,7 +29,8 @@ export function useMedidasQuinzeMinutosPage() {
     useEffect(() => {
         loadMedidas();
         loadPontosDeMedicao();
-    }, [loadMedidas, loadPontosDeMedicao]);
+        loadUnidades();
+    }, [loadMedidas, loadPontosDeMedicao, loadUnidades]);
 
     const handleFiltersChange = useCallback(async (newFilters: MedidaQuinzeMinutosFilters) => {
         setFilters(newFilters);
@@ -51,6 +58,8 @@ export function useMedidasQuinzeMinutosPage() {
         viewModal,
         pontosDeMedicao,
         loadingPontos,
+        unidades,
+        loadingUnidades,
         handleFiltersChange,
         handleViewMedida,
         handleCloseViewModal,

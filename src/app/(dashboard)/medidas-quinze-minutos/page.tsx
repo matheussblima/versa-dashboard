@@ -20,6 +20,8 @@ export default function MedidasQuinzeMinutosPage() {
     viewModal,
     pontosDeMedicao,
     loadingPontos,
+    unidades,
+    loadingUnidades,
     handleFiltersChange,
     handleViewMedida,
     handleCloseViewModal,
@@ -45,6 +47,8 @@ export default function MedidasQuinzeMinutosPage() {
             onFiltersChange={handleFiltersChange}
             pontosDeMedicao={pontosDeMedicao}
             loadingPontos={loadingPontos}
+            unidades={unidades}
+            loadingUnidades={loadingUnidades}
           />
 
           <div>

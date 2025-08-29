@@ -9,6 +9,10 @@ export class MedidasQuinzeMinutosService {
             params.append('codigoPontoMedicao', filters.codigoPontoMedicao);
         }
 
+        if (filters?.unidadeId) {
+            params.append('unidadeId', filters.unidadeId);
+        }
+
         const response = await api.get(`/medidas-quinze-minutos?${params.toString()}`);
         return response.data;
     }

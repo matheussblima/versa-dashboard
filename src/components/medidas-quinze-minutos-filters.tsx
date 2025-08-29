@@ -11,13 +11,15 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
-import { MedidaQuinzeMinutosFilters, PontoDeMedicao } from "@/types";
+import { MedidaQuinzeMinutosFilters, PontoDeMedicao, Unidade } from "@/types";
 
 interface MedidasQuinzeMinutosFiltersProps {
   filters: MedidaQuinzeMinutosFilters;
   onFiltersChange: (filters: MedidaQuinzeMinutosFilters) => void;
   pontosDeMedicao: PontoDeMedicao[];
   loadingPontos?: boolean;
+  unidades: Unidade[];
+  loadingUnidades?: boolean;
 }
 
 export function MedidasQuinzeMinutosFilters({
@@ -25,6 +27,8 @@ export function MedidasQuinzeMinutosFilters({
   onFiltersChange,
   pontosDeMedicao,
   loadingPontos = false,
+  unidades,
+  loadingUnidades = false,
 }: MedidasQuinzeMinutosFiltersProps) {
   const [localFilters, setLocalFilters] =
     useState<MedidaQuinzeMinutosFilters>(filters);
@@ -50,14 +54,21 @@ export function MedidasQuinzeMinutosFilters({
     }));
   };
 
+  const handleUnidadeChange = (value: string) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      unidadeId: value === "todos" ? undefined : value,
+    }));
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Filtros</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col sm:flex-row gap-4 items-end">
-          <div className="flex-1 min-w-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+          <div className="min-w-0">
             <label
               htmlFor="codigoPontoMedicao"
               className="text-sm font-medium text-gray-700 block mb-2"
@@ -68,7 +79,7 @@ export function MedidasQuinzeMinutosFilters({
               value={localFilters.codigoPontoMedicao || "todos"}
               onValueChange={handlePontoChange}
             >
-              <SelectTrigger className="min-w-[300px] max-w-md">
+              <SelectTrigger>
                 <SelectValue placeholder="Selecione um ponto de medição" />
               </SelectTrigger>
               <SelectContent>
@@ -88,14 +99,49 @@ export function MedidasQuinzeMinutosFilters({
             </Select>
           </div>
 
-          <div className="flex gap-2 flex-shrink-0">
-            <Button onClick={handleApplyFilters}>
+          <div className="min-w-0">
+            <label
+              htmlFor="unidadeId"
+              className="text-sm font-medium text-gray-700 block mb-2"
+            >
+              Unidade
+            </label>
+            <Select
+              value={localFilters.unidadeId || "todos"}
+              onValueChange={handleUnidadeChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione uma unidade" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todas as unidades</SelectItem>
+                {loadingUnidades ? (
+                  <SelectItem value="loading" disabled>
+                    Carregando unidades...
+                  </SelectItem>
+                ) : (
+                  unidades.map((unidade) => (
+                    <SelectItem key={unidade.id} value={unidade.id}>
+                      {unidade.nome} - {unidade.codigoCCEE}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Button onClick={handleApplyFilters} className="w-full">
               <Search className="w-4 h-4 mr-2" />
               Aplicar Filtros
             </Button>
 
             {hasActiveFilters && (
-              <Button variant="outline" onClick={handleClearFilters}>
+              <Button
+                variant="outline"
+                onClick={handleClearFilters}
+                className="w-full"
+              >
                 <X className="w-4 h-4 mr-2" />
                 Limpar
               </Button>

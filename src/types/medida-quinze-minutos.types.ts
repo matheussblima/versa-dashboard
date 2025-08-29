@@ -8,6 +8,17 @@ export interface MedidaQuinzeMinutos {
     updatedAt: Date;
 }
 
+export interface MedidaQuinzeMinutosResponse {
+    data: MedidaQuinzeMinutos[];
+    hasNext: boolean;
+    hasPrevious: boolean;
+    limit: number;
+    page: number;
+    total: number;
+    totalPages: number;
+}
+
 export interface MedidaQuinzeMinutosFilters {
     codigoPontoMedicao?: string;
+    unidadeId?: string;
 }
