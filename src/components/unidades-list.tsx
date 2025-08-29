@@ -77,7 +77,7 @@ export function UnidadesList({
 
               <div className="flex items-center space-x-2">
                 <Button
-                  variant="text"
+                  variant="link"
                   size="sm"
                   onClick={() => onView(unidade)}
                   className="text-gray-400 hover:text-gray-600"
@@ -85,7 +85,7 @@ export function UnidadesList({
                   <Eye className="w-4 h-4" />
                 </Button>
                 <Button
-                  variant="text"
+                  variant="link"
                   size="sm"
                   onClick={() => onEdit(unidade)}
                   className="text-gray-400 hover:text-green-600"
@@ -93,7 +93,7 @@ export function UnidadesList({
                   <Edit className="w-4 h-4" />
                 </Button>
                 <Button
-                  variant="text"
+                  variant="link"
                   size="sm"
                   onClick={() => onDelete(unidade.id)}
                   className="text-gray-400 hover:text-red-600"
@@ -111,7 +111,7 @@ export function UnidadesList({
                       Subunidades ({unidade.subUnidades.length})
                     </h5>
                     <Button
-                      variant="text"
+                      variant="link"
                       size="sm"
                       onClick={() => onAddSubUnidade(unidade)}
                       className="text-xs text-green-600 hover:text-green-700 h-6 px-2"
@@ -160,7 +160,7 @@ export function UnidadesList({
                           </div>
                           <div className="flex items-center space-x-1">
                             <Button
-                              variant="text"
+                              variant="link"
                               size="sm"
                               onClick={() => onViewSubUnidade(subunidade)}
                               className="text-gray-400 hover:text-gray-600 h-6 w-6 p-0"
@@ -168,7 +168,7 @@ export function UnidadesList({
                               <Eye className="w-3 h-3" />
                             </Button>
                             <Button
-                              variant="text"
+                              variant="link"
                               size="sm"
                               onClick={() => onEditSubUnidade(subunidade)}
                               className="text-gray-400 hover:text-green-600 h-6 w-6 p-0"
@@ -176,7 +176,7 @@ export function UnidadesList({
                               <Edit className="w-3 h-3" />
                             </Button>
                             <Button
-                              variant="text"
+                              variant="link"
                               size="sm"
                               onClick={() => onDeleteSubUnidade(subunidade.id)}
                               className="text-gray-400 hover:text-red-600 h-6 w-6 p-0"
@@ -200,7 +200,7 @@ export function UnidadesList({
                       Nenhuma subunidade cadastrada
                     </p>
                     <Button
-                      variant="text"
+                      variant="link"
                       size="sm"
                       onClick={() => onAddSubUnidade(unidade)}
                       className="text-xs text-green-600 hover:text-green-700 h-6 px-2"

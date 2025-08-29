@@ -6,6 +6,7 @@ import {
   MedidasQuinzeMinutosList,
   MedidasQuinzeMinutosFilters,
   MedidaQuinzeMinutosDialog,
+  PaginationWrapper,
 } from "@/components";
 import { Zap, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -15,6 +16,7 @@ export default function MedidasQuinzeMinutosPage() {
     medidas,
     loading,
     error,
+    currentPage,
     filters,
     selectedMedida,
     viewModal,
@@ -23,6 +25,7 @@ export default function MedidasQuinzeMinutosPage() {
     unidades,
     loadingUnidades,
     handleFiltersChange,
+    handlePageChange,
     handleViewMedida,
     handleCloseViewModal,
   } = useMedidasQuinzeMinutosPage();
@@ -66,10 +69,21 @@ export default function MedidasQuinzeMinutosPage() {
                 </span>
               </div>
             ) : (
-              <MedidasQuinzeMinutosList
-                medidas={medidas}
-                onView={handleViewMedida}
-              />
+              <>
+                <MedidasQuinzeMinutosList
+                  medidas={medidas}
+                  onView={handleViewMedida}
+                />
+
+                <div className="mt-6">
+                  <PaginationWrapper
+                    data={medidas}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                    loading={loading}
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>

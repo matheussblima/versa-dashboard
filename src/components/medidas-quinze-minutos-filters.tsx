@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import { MedidaQuinzeMinutosFilters, PontoDeMedicao, Unidade } from "@/types";
 
 interface MedidasQuinzeMinutosFiltersProps {
@@ -33,10 +33,6 @@ export function MedidasQuinzeMinutosFilters({
   const [localFilters, setLocalFilters] =
     useState<MedidaQuinzeMinutosFilters>(filters);
 
-  const handleApplyFilters = () => {
-    onFiltersChange(localFilters);
-  };
-
   const handleClearFilters = () => {
     const clearedFilters: MedidaQuinzeMinutosFilters = {};
     setLocalFilters(clearedFilters);
@@ -48,105 +44,104 @@ export function MedidasQuinzeMinutosFilters({
   );
 
   const handlePontoChange = (value: string) => {
-    setLocalFilters((prev) => ({
-      ...prev,
+    const newFilters = {
+      ...localFilters,
       codigoPontoMedicao: value === "todos" ? undefined : value,
-    }));
+    };
+    setLocalFilters(newFilters);
+    onFiltersChange(newFilters);
   };
 
   const handleUnidadeChange = (value: string) => {
-    setLocalFilters((prev) => ({
-      ...prev,
+    const newFilters = {
+      ...localFilters,
       unidadeId: value === "todos" ? undefined : value,
-    }));
+    };
+    setLocalFilters(newFilters);
+    onFiltersChange(newFilters);
   };
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Filtros</CardTitle>
-      </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
-          <div className="min-w-0">
-            <label
-              htmlFor="codigoPontoMedicao"
-              className="text-sm font-medium text-gray-700 block mb-2"
-            >
-              Ponto de Medição
-            </label>
-            <Select
-              value={localFilters.codigoPontoMedicao || "todos"}
-              onValueChange={handlePontoChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione um ponto de medição" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos os pontos</SelectItem>
-                {loadingPontos ? (
-                  <SelectItem value="loading" disabled>
-                    Carregando pontos...
-                  </SelectItem>
-                ) : (
-                  pontosDeMedicao.map((ponto) => (
-                    <SelectItem key={ponto.id} value={ponto.codigo}>
-                      {ponto.codigo} {ponto.descricao && `- ${ponto.descricao}`}
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="w-full">
+              <label
+                htmlFor="codigoPontoMedicao"
+                className="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Ponto de Medição
+              </label>
+              <Select
+                value={localFilters.codigoPontoMedicao || "todos"}
+                onValueChange={handlePontoChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione um ponto de medição" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos os pontos</SelectItem>
+                  {loadingPontos ? (
+                    <SelectItem value="loading" disabled>
+                      Carregando pontos...
                     </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
+                  ) : (
+                    pontosDeMedicao.map((ponto) => (
+                      <SelectItem key={ponto.id} value={ponto.codigo}>
+                        {ponto.codigo}{" "}
+                        {ponto.descricao && `- ${ponto.descricao}`}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="w-full">
+              <label
+                htmlFor="unidadeId"
+                className="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Unidade
+              </label>
+              <Select
+                value={localFilters.unidadeId || "todos"}
+                onValueChange={handleUnidadeChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione uma unidade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todas as unidades</SelectItem>
+                  {loadingUnidades ? (
+                    <SelectItem value="loading" disabled>
+                      Carregando unidades...
+                    </SelectItem>
+                  ) : (
+                    unidades.map((unidade) => (
+                      <SelectItem key={unidade.id} value={unidade.id}>
+                        {unidade.nome} - {unidade.codigoCCEE}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          <div className="min-w-0">
-            <label
-              htmlFor="unidadeId"
-              className="text-sm font-medium text-gray-700 block mb-2"
-            >
-              Unidade
-            </label>
-            <Select
-              value={localFilters.unidadeId || "todos"}
-              onValueChange={handleUnidadeChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione uma unidade" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todas as unidades</SelectItem>
-                {loadingUnidades ? (
-                  <SelectItem value="loading" disabled>
-                    Carregando unidades...
-                  </SelectItem>
-                ) : (
-                  unidades.map((unidade) => (
-                    <SelectItem key={unidade.id} value={unidade.id}>
-                      {unidade.nome} - {unidade.codigoCCEE}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Button onClick={handleApplyFilters} className="w-full">
-              <Search className="w-4 h-4 mr-2" />
-              Aplicar Filtros
-            </Button>
-
-            {hasActiveFilters && (
+          {hasActiveFilters && (
+            <div className="flex justify-end">
               <Button
                 variant="outline"
                 onClick={handleClearFilters}
-                className="w-full"
+                className="w-full sm:w-auto"
               >
                 <X className="w-4 h-4 mr-2" />
-                Limpar
+                Limpar Filtros
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

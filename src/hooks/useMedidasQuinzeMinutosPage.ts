@@ -7,7 +7,9 @@ export function useMedidasQuinzeMinutosPage() {
         medidas,
         loading,
         error,
+        currentPage,
         loadMedidas,
+        changePage,
     } = useMedidasQuinzeMinutos();
 
     const {
@@ -34,8 +36,12 @@ export function useMedidasQuinzeMinutosPage() {
 
     const handleFiltersChange = useCallback(async (newFilters: MedidaQuinzeMinutosFilters) => {
         setFilters(newFilters);
-        await loadMedidas(newFilters);
+        await loadMedidas(newFilters, 1); // Reset para página 1 quando filtros mudarem
     }, [loadMedidas]);
+
+    const handlePageChange = useCallback(async (page: number) => {
+        await changePage(page, filters);
+    }, [changePage, filters]);
 
     const handleViewMedida = useCallback((medida: MedidaQuinzeMinutos) => {
         setSelectedMedida(medida);
@@ -53,6 +59,7 @@ export function useMedidasQuinzeMinutosPage() {
         medidas,
         loading,
         error,
+        currentPage,
         filters,
         selectedMedida,
         viewModal,
@@ -61,6 +68,7 @@ export function useMedidasQuinzeMinutosPage() {
         unidades,
         loadingUnidades,
         handleFiltersChange,
+        handlePageChange,
         handleViewMedida,
         handleCloseViewModal,
     };
