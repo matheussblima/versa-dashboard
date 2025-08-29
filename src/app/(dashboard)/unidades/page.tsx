@@ -4,8 +4,9 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { useUnidadesPage } from "@/hooks/useUnidadesPage";
 import { SubUnidadeDialog, UnidadeDialog, UnidadesList } from "@/components";
 import { Button } from "@/components/ui/button";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function UnidadesPage() {
   const {
@@ -20,6 +21,8 @@ export default function UnidadesPage() {
     estados,
     loadingRegioes,
     loadingEstados,
+    loading,
+    error,
     createModal,
     editModal,
     viewModal,
@@ -69,16 +72,31 @@ export default function UnidadesPage() {
           />
         </div>
 
-        <UnidadesList
-          unidades={filteredUnidades}
-          onView={openViewDialog}
-          onEdit={openEditDialog}
-          onDelete={handleDelete}
-          onAddSubUnidade={openSubUnidadeCreateDialog}
-          onViewSubUnidade={openSubUnidadeViewDialog}
-          onEditSubUnidade={openSubUnidadeEditDialog}
-          onDeleteSubUnidade={handleSubUnidadeDelete}
-        />
+        <div>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+              <span className="ml-2 text-gray-600">Carregando unidades...</span>
+            </div>
+          ) : (
+            <UnidadesList
+              unidades={filteredUnidades}
+              onView={openViewDialog}
+              onEdit={openEditDialog}
+              onDelete={handleDelete}
+              onAddSubUnidade={openSubUnidadeCreateDialog}
+              onViewSubUnidade={openSubUnidadeViewDialog}
+              onEditSubUnidade={openSubUnidadeEditDialog}
+              onDeleteSubUnidade={handleSubUnidadeDelete}
+            />
+          )}
+        </div>
 
         <UnidadeDialog
           isOpen={createModal.isOpen}
