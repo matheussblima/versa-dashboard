@@ -4,6 +4,7 @@ export interface PLD {
     submercado: string;
     codigoSubmercado: string;
     valor: number;
+    unidadeId: string;
     moeda: string;
     tipo: string;
     createdAt: Date;
@@ -25,4 +26,5 @@ export interface PLDFilters {
     dataFim?: string;
     codigoSubmercado?: string;
     tipo?: string;
+    unidadeId?: string;
 }

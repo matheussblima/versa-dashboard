@@ -9,9 +9,18 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, DollarSign, Hash, Clock, MapPin } from "lucide-react";
+import {
+  Calendar,
+  DollarSign,
+  Hash,
+  Clock,
+  MapPin,
+  Building,
+} from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useUnidades } from "@/hooks";
+import { useEffect, useState } from "react";
 
 interface PLDDialogProps {
   pld?: PLD;
@@ -20,6 +29,20 @@ interface PLDDialogProps {
 }
 
 export function PLDDialog({ pld, isOpen, onOpenChange }: PLDDialogProps) {
+  const { unidades, loadUnidades } = useUnidades();
+  const [unidadeNome, setUnidadeNome] = useState<string>("");
+
+  useEffect(() => {
+    loadUnidades();
+  }, [loadUnidades]);
+
+  useEffect(() => {
+    if (pld && unidades.length > 0) {
+      const unidade = unidades.find((u) => u.id === pld.unidadeId);
+      setUnidadeNome(unidade?.nome || "Unidade não encontrada");
+    }
+  }, [pld, unidades]);
+
   if (!pld) return null;
 
   return (
@@ -48,6 +71,14 @@ export function PLDDialog({ pld, isOpen, onOpenChange }: PLDDialogProps) {
           <Separator />
 
           <div className="space-y-3">
+            <div className="flex items-center space-x-3">
+              <Building className="w-4 h-4 text-blue-600" />
+              <div>
+                <span className="text-sm text-gray-600">Unidade</span>
+                <div className="text-sm font-medium">{unidadeNome}</div>
+              </div>
+            </div>
+
             <div className="flex items-center space-x-3">
               <DollarSign className="w-4 h-4 text-green-600" />
               <div>

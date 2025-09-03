@@ -27,6 +27,9 @@ export function usePLD() {
             if (filters?.tipo) {
                 params.append('tipo', filters.tipo);
             }
+            if (filters?.unidadeId) {
+                params.append('unidadeId', filters.unidadeId);
+            }
             params.append('page', page.toString());
             params.append('limit', '10');
 

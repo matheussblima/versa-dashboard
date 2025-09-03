@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, Calendar, DollarSign, Hash } from "lucide-react";
+import { Eye, Calendar, DollarSign, Building } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useUnidades } from "@/hooks";
+import { useEffect, useState } from "react";
 
 interface PLDListProps {
   plds?: PLDResponse;
@@ -21,6 +23,23 @@ interface PLDListProps {
 }
 
 export function PLDList({ plds, onView }: PLDListProps) {
+  const { unidades, loadUnidades } = useUnidades();
+  const [unidadesMap, setUnidadesMap] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    loadUnidades();
+  }, [loadUnidades]);
+
+  useEffect(() => {
+    if (unidades.length > 0) {
+      const map = unidades.reduce((acc, unidade) => {
+        acc[unidade.id] = unidade.nome;
+        return acc;
+      }, {} as Record<string, string>);
+      setUnidadesMap(map);
+    }
+  }, [unidades]);
+
   if (!plds?.data?.length) {
     return (
       <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
@@ -39,6 +58,7 @@ export function PLDList({ plds, onView }: PLDListProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Submercado</TableHead>
+            <TableHead>Unidade</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead>Tipo</TableHead>
             <TableHead>Data/Hora</TableHead>
@@ -54,6 +74,14 @@ export function PLDList({ plds, onView }: PLDListProps) {
                   <Badge variant="outline" className="text-xs">
                     {pld.codigoSubmercado}
                   </Badge>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-2">
+                  <Building className="w-4 h-4 text-gray-500" />
+                  <span className="text-sm">
+                    {unidadesMap[pld.unidadeId] || "Unidade não encontrada"}
+                  </span>
                 </div>
               </TableCell>
               <TableCell>

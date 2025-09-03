@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import type { PLDFilters } from "@/types";
+import { useUnidades } from "@/hooks";
 
 interface PLDFiltersProps {
   filters: PLDFilters;
@@ -21,6 +22,11 @@ interface PLDFiltersProps {
 
 export function PLDFilters({ filters, onFiltersChange }: PLDFiltersProps) {
   const [localFilters, setLocalFilters] = useState<PLDFilters>(filters);
+  const { unidades, loadUnidades } = useUnidades();
+
+  useEffect(() => {
+    loadUnidades();
+  }, [loadUnidades]);
 
   const handleClearFilters = () => {
     const clearedFilters: PLDFilters = {};
@@ -50,6 +56,15 @@ export function PLDFilters({ filters, onFiltersChange }: PLDFiltersProps) {
     onFiltersChange(newFilters);
   };
 
+  const handleUnidadeChange = (value: string) => {
+    const newFilters = {
+      ...localFilters,
+      unidadeId: value === "todos" ? undefined : value,
+    };
+    setLocalFilters(newFilters);
+    onFiltersChange(newFilters);
+  };
+
   const handleDataInicioChange = (value: string) => {
     const newFilters = {
       ...localFilters,
@@ -72,7 +87,7 @@ export function PLDFilters({ filters, onFiltersChange }: PLDFiltersProps) {
     <Card>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="w-full">
               <label
                 htmlFor="codigoSubmercado"
@@ -116,6 +131,31 @@ export function PLDFilters({ filters, onFiltersChange }: PLDFiltersProps) {
                   <SelectItem value="HORARIO">Horário</SelectItem>
                   <SelectItem value="SEMANAL">Semanal</SelectItem>
                   <SelectItem value="MENSAL">Mensal</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="w-full">
+              <label
+                htmlFor="unidadeId"
+                className="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Unidade
+              </label>
+              <Select
+                value={localFilters.unidadeId || "todos"}
+                onValueChange={handleUnidadeChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione uma unidade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todas as unidades</SelectItem>
+                  {unidades.map((unidade) => (
+                    <SelectItem key={unidade.id} value={unidade.id}>
+                      {unidade.nome}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
