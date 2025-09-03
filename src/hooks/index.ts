@@ -6,6 +6,7 @@ export { useSelection } from './useSelection';
 export { useUnidadesPage } from './useUnidadesPage';
 export { useSubUnidades } from './useSubUnidades';
 export { usePontosDeMedicao } from './usePontosDeMedicao';
+export { usePontosDeMedicaoPage } from './usePontosDeMedicaoPage';
 export { useRegioes } from './useRegioes';
 export { useEstados } from './useEstados';
 export { useMedidasQuinzeMinutos } from './useMedidasQuinzeMinutos';

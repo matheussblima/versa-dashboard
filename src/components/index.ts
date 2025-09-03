@@ -5,3 +5,5 @@ export { MedidasQuinzeMinutosList } from './medidas-quinze-minutos-list';
 export { MedidasQuinzeMinutosFilters } from './medidas-quinze-minutos-filters';
 export { MedidaQuinzeMinutosDialog } from './medida-quinze-minutos-dialog';
 export { PaginationWrapper } from './pagination-wrapper';
+export { PontosDeMedicaoList } from './pontos-de-medicao-list';
+export { PontoDeMedicaoDialog } from './ponto-de-medicao-dialog';

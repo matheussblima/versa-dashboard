@@ -2,14 +2,7 @@
 
 import { Estado } from './estado.types';
 import { Regiao } from './regiao.types';
-
-export interface PontoDeMedicao {
-    id: string;
-    codigo: string;
-    descricao?: string;
-    createdAt: string;
-    updatedAt: string;
-}
+import { PontoDeMedicao } from './ponto-de-medicao.types';
 
 export interface SubUnidade {
     id: string;

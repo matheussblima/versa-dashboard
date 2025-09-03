@@ -21,6 +21,7 @@ import {
   Settings,
   Building2,
   Zap,
+  Hash,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -40,6 +41,12 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       href: "/dashboard",
     },
     { id: "unidades", label: "Unidades", icon: Building2, href: "/unidades" },
+    {
+      id: "pontos-de-medicao",
+      label: "Pontos de Medição",
+      icon: Hash,
+      href: "/pontos-de-medicao",
+    },
     {
       id: "medidas-quinze-minutos",
       label: "Medidas 15min",
