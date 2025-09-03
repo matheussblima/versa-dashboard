@@ -3,33 +3,27 @@ import { PontoDeMedicao, CreatePontoDeMedicaoData, UpdatePontoDeMedicaoData } fr
 import { pontosDeMedicaoService } from '@/services/pontos-de-medicao.service';
 import { useModal } from './useModal';
 import { toast } from 'sonner';
+import { usePontosDeMedicao } from './usePontosDeMedicao';
 
 export function usePontosDeMedicaoPage() {
-    const [pontosDeMedicao, setPontosDeMedicao] = useState<PontoDeMedicao[]>([]);
     const [filteredPontosDeMedicao, setFilteredPontosDeMedicao] = useState<PontoDeMedicao[]>([]);
     const [selectedPontoDeMedicao, setSelectedPontoDeMedicao] = useState<PontoDeMedicao | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+
+    const { pontosDeMedicao,
+        loading,
+        error,
+        loadPontosDeMedicao,
+        createPontosDeMedicao,
+        updatePontosDeMedicao,
+        deletePontosDeMedicao,
+    } = usePontosDeMedicao();
 
     const createModal = useModal();
     const editModal = useModal();
     const viewModal = useModal();
 
-    const loadPontosDeMedicao = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            const data = await pontosDeMedicaoService.findAll();
-            setPontosDeMedicao(data);
-            setFilteredPontosDeMedicao(data);
-        } catch (err) {
-            setError('Erro ao carregar pontos de medição');
-            console.error('Erro ao carregar pontos de medição:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
+
 
     useEffect(() => {
         loadPontosDeMedicao();
@@ -46,8 +40,7 @@ export function usePontosDeMedicaoPage() {
 
     const handleCreateSubmit = async (data: CreatePontoDeMedicaoData) => {
         try {
-            const newPontoDeMedicao = await pontosDeMedicaoService.create(data);
-            setPontosDeMedicao((prev) => [...prev, newPontoDeMedicao]);
+            await createPontosDeMedicao(data);
             createModal.close();
             toast.success('Ponto de medição criado com sucesso!');
         } catch (err) {
@@ -60,10 +53,7 @@ export function usePontosDeMedicaoPage() {
         if (!selectedPontoDeMedicao) return;
 
         try {
-            const updatedPontoDeMedicao = await pontosDeMedicaoService.update(selectedPontoDeMedicao.id, data);
-            setPontosDeMedicao((prev) =>
-                prev.map((ponto) => (ponto.id === selectedPontoDeMedicao.id ? updatedPontoDeMedicao : ponto))
-            );
+            await updatePontosDeMedicao(selectedPontoDeMedicao.id, data);
             editModal.close();
             setSelectedPontoDeMedicao(null);
             toast.success('Ponto de medição atualizado com sucesso!');
@@ -75,8 +65,7 @@ export function usePontosDeMedicaoPage() {
 
     const handleDelete = async (id: string) => {
         try {
-            await pontosDeMedicaoService.delete(id);
-            setPontosDeMedicao((prev) => prev.filter((ponto) => ponto.id !== id));
+            await deletePontosDeMedicao(id);
             toast.success('Ponto de medição excluído com sucesso!');
         } catch (err) {
             toast.error('Erro ao excluir ponto de medição');
