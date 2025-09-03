@@ -23,8 +23,6 @@ export function usePontosDeMedicaoPage() {
     const editModal = useModal();
     const viewModal = useModal();
 
-
-
     useEffect(() => {
         loadPontosDeMedicao();
     }, []);
