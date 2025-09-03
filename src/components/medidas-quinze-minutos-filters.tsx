@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { MedidaQuinzeMinutosFilters, PontoDeMedicao, Unidade } from "@/types";
 
@@ -61,11 +62,29 @@ export function MedidasQuinzeMinutosFilters({
     onFiltersChange(newFilters);
   };
 
+  const handleDataInicioChange = (value: string) => {
+    const newFilters = {
+      ...localFilters,
+      dataInicio: value || undefined,
+    };
+    setLocalFilters(newFilters);
+    onFiltersChange(newFilters);
+  };
+
+  const handleDataFimChange = (value: string) => {
+    const newFilters = {
+      ...localFilters,
+      dataFim: value || undefined,
+    };
+    setLocalFilters(newFilters);
+    onFiltersChange(newFilters);
+  };
+
   return (
     <Card>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="w-full">
               <label
                 htmlFor="codigoPontoMedicao"
@@ -127,6 +146,38 @@ export function MedidasQuinzeMinutosFilters({
                   )}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="w-full">
+              <label
+                htmlFor="dataInicio"
+                className="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Data Início
+              </label>
+              <Input
+                type="date"
+                id="dataInicio"
+                value={localFilters.dataInicio || ""}
+                onChange={(e) => handleDataInicioChange(e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            <div className="w-full">
+              <label
+                htmlFor="dataFim"
+                className="text-sm font-medium text-gray-700 block mb-2"
+              >
+                Data Fim
+              </label>
+              <Input
+                type="date"
+                id="dataFim"
+                value={localFilters.dataFim || ""}
+                onChange={(e) => handleDataFimChange(e.target.value)}
+                className="w-full"
+              />
             </div>
           </div>
 

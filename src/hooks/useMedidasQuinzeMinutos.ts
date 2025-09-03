@@ -21,6 +21,12 @@ export function useMedidasQuinzeMinutos() {
             if (filters?.unidadeId) {
                 params.append('unidadeId', filters.unidadeId);
             }
+            if (filters?.dataInicio) {
+                params.append('dataInicio', filters.dataInicio);
+            }
+            if (filters?.dataFim) {
+                params.append('dataFim', filters.dataFim);
+            }
             params.append('page', page.toString());
             params.append('limit', '10');
 

@@ -21,4 +21,6 @@ export interface MedidaQuinzeMinutosResponse {
 export interface MedidaQuinzeMinutosFilters {
     codigoPontoMedicao?: string;
     unidadeId?: string;
+    dataInicio?: string;
+    dataFim?: string;
 }

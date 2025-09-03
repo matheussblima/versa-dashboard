@@ -6,6 +6,8 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url);
         const codigoPontoMedicao = searchParams.get('codigoPontoMedicao');
         const unidadeId = searchParams.get('unidadeId');
+        const dataInicio = searchParams.get('dataInicio');
+        const dataFim = searchParams.get('dataFim');
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '10');
 
@@ -15,6 +17,12 @@ export async function GET(request: NextRequest) {
         }
         if (unidadeId) {
             filters.unidadeId = unidadeId;
+        }
+        if (dataInicio) {
+            filters.dataInicio = dataInicio;
+        }
+        if (dataFim) {
+            filters.dataFim = dataFim;
         }
 
         const medidas = await medidasQuinzeMinutosService.findAll(
