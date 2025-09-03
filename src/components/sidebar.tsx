@@ -21,7 +21,7 @@ import {
   Settings,
   Building2,
   Zap,
-  Hash,
+  Bolt,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -44,7 +44,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
     {
       id: "pontos-de-medicao",
       label: "Pontos de Medição",
-      icon: Hash,
+      icon: Bolt,
       href: "/pontos-de-medicao",
     },
     {
