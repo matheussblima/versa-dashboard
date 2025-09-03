@@ -22,6 +22,7 @@ import {
   Building2,
   Zap,
   Bolt,
+  DollarSign,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -52,6 +53,12 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       label: "Medidas 15min",
       icon: Zap,
       href: "/medidas-quinze-minutos",
+    },
+    {
+      id: "pld",
+      label: "PLD",
+      icon: DollarSign,
+      href: "/pld",
     },
   ];
 

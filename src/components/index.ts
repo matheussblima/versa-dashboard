@@ -7,3 +7,6 @@ export { MedidaQuinzeMinutosDialog } from './medida-quinze-minutos-dialog';
 export { PaginationWrapper } from './pagination-wrapper';
 export { PontosDeMedicaoList } from './pontos-de-medicao-list';
 export { PontoDeMedicaoDialog } from './ponto-de-medicao-dialog';
+export { PLDList } from './pld-list';
+export { PLDFilters } from './pld-filters';
+export { PLDDialog } from './pld-dialog';

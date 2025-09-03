@@ -11,3 +11,5 @@ export { useRegioes } from './useRegioes';
 export { useEstados } from './useEstados';
 export { useMedidasQuinzeMinutos } from './useMedidasQuinzeMinutos';
 export { useMedidasQuinzeMinutosPage } from './useMedidasQuinzeMinutosPage';
+export { usePLD } from './usePLD';
+export { usePLDPage } from './usePLDPage';
